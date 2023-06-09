@@ -1,6 +1,5 @@
 import { IUser } from '@/interfaces'
 import mongoose, {Schema, model, Model} from 'mongoose'
-import { SyntheticModule } from 'vm'
 
 const userSchema = new Schema({
   name:{type: String, required:true},

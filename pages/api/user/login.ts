@@ -48,7 +48,11 @@ async function loginUser  (req: NextApiRequest, res: NextApiResponse<Data>) {
 
   const token = jwt.signToken(_id, email)
 
+  console.log('login user:', user) 
+  console.log('login token:', token) 
+  
   return res.status(200).json({
+
     token,
     user:{
       email, role, name

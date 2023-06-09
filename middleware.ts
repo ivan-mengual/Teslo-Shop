@@ -1,31 +1,27 @@
-import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
+
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { isValidToken } from './utils/jwt';
-import { jwt } from './utils';
+import { getToken } from 'next-auth/jwt';
  
 
 export async function middleware(req: NextRequest) {
   
-// console.log('middleware: ', request.cookies.toString())
+  const session = await getToken({req, secret: process.env.NEXTAUTH_SECRET})
 
-  const cookies:RequestCookies = req.cookies;
-  const token = cookies.has('token') ? cookies.get('token')?.value : '' ;
-  
+  if(!session){
+    const requestedPage = req.nextUrl.pathname
+    const url = req.nextUrl.clone()
+    url.pathname='/auth/login'
+    url.search= `p=${requestedPage}`
+    return NextResponse.redirect(url)
+  }
+
   return NextResponse.next()
-
-
-  // try {
-  //   await jwt.isValidToken(token)
-  //   return NextResponse.next();
-  // } catch (error) {
-  //   return Response.redirect('/auth/login')
-  // }
   
   
 }
  
 
 export const config = {
-  matcher: '/checkout/:path*',
+  matcher: ['/checkout/address', '/checkout/summary']
 };

@@ -7,9 +7,11 @@ import { useProducts } from '../hooks/useProducts';
 import { FullScreenLoading } from "@/components/ui";
 
 
+
 const Home:NextPage = () => {
 
   
+
   const {products, isLoading} = useProducts('/products')
   
 
